@@ -1,0 +1,14 @@
+version: "3"
+services:
+  mysql-docker:
+    image: mysql
+    ports:
+      - "3307:3307"
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_ROOT_PASSWORD: 0000
+      MYSQL_DATABASE: eureka
+      MYSQL_PASSWORD: 0000
+    container_name: "docker-mysql"
+    volumes:
+      - ./docker-database/mysql:/var/lib/mysql
