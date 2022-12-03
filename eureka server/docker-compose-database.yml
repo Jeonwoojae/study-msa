@@ -3,7 +3,7 @@ services:
   mysql-docker:
     image: mysql
     ports:
-      - "3307:3307"
+      - "3306:3306"
     environment:
       TZ: Asia/Seoul
       MYSQL_ROOT_PASSWORD: 0000
