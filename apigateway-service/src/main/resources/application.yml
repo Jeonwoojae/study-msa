@@ -14,7 +14,7 @@ spring:
     gateway:
       routes:
         - id: first-service
-          uri: http://localhost:8001/
+          uri: http://localhost:8081/
           predicates:
             - Path=/first-service/**
           filters:
@@ -22,7 +22,7 @@ spring:
 #            - AddResponseHeader=first-response, first-response-header2
             - CustomFilter
         - id: second-service
-          uri: http://localhost:8002/
+          uri: http://localhost:8082/
           predicates:
             - Path=/second-service/**
           filters:
