@@ -26,9 +26,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 //        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
-                    .hasIpAddress("*")
-                    .and()
-                    .addFilter(getAuthenticationFilter());
+                .permitAll()
+//                .hasIpAddress("*")
+                .and()
+                .addFilter(getAuthenticationFilter());
 
         http.headers().frameOptions().disable();//h2-console을 열기 위함.
     }
