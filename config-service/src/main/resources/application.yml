@@ -8,4 +8,8 @@ spring:
     config:
       server:
         git:
-          uri: file:///Users/user/OneDrive - kumoh.ac.kr/study_msa/git-local-repo
+          uri: https://github.com/Jeonwoojae/spring-cloud-config.git
+#          if private
+#          username:
+#          password:
+#          uri: file:///Users/user/OneDrive - kumoh.ac.kr/study_msa/git-local-repo

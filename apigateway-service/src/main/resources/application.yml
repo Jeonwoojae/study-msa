@@ -10,7 +10,13 @@ eureka:
 spring:
   application:
     name: apigateway-service
+  config:
+    import: "optional:configserver:http://127.0.0.1:8888/"
+
   cloud:
+    config:
+      name: userservice
+      profile: default
     gateway:
       routes:
 #        - id: user-service
@@ -58,6 +64,14 @@ spring:
 #            - AddRequestHeader=first-request, first-request-header2
 #            - AddResponseHeader=first-response, first-response-header2
             - CustomFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
       default-filters:
         - name: GlobalFilter
@@ -65,6 +79,12 @@ spring:
             baseMessage: Spring Cloud Gateway Global Filter
             preLogger: true
             postLogger: true
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: *
 
 token:
   secret: user_token
