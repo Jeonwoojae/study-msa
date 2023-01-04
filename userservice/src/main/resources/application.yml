@@ -13,6 +13,12 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb
+  config:
+    import: optional:configserver:http://127.0.0.1:8888/
+  cloud:
+    config:
+      name: userservice
+      profile: default
 
 eureka:
   instance:
@@ -30,7 +36,13 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-token:
-  expiration_time: 86400000
-#  1day
-  secret: user_token
+#token:
+#  expiration_time: 86400000
+##  1day
+#  secret: user_token
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: refresh, health, beans
