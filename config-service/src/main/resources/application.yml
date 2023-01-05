@@ -2,6 +2,8 @@ server:
   port: 8888
 
 spring:
+  profiles:
+    active: active
   application:
     name: config-service
   rabbitmq:
@@ -14,6 +16,8 @@ spring:
       server:
         git:
           uri: https://github.com/Jeonwoojae/spring-cloud-config.git
+  config:
+    import: bootstrap.yml
 #          if private
 #          username:
 #          password:
@@ -22,4 +26,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, bus-refresh
+        include: health, busrefresh
