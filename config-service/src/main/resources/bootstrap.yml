@@ -1,2 +1,17 @@
 encrypt:
-  key: asdjnwejewhewafaew41341
+#  key: asdjnwejewhewafaew41341
+  key-store:
+    location: file:\\\C:\Users\user\OneDrive - kumoh.ac.kr\study_msa\keystore\apiEncryptionKey.jks
+    password: test1234
+    alias: apiEncryptionKey
+
+# how to use key tool?
+# 1. go to working dir
+# 2. keytool -genkeypair -alias apiEncryptionkey -keyalg RSA -dname "CN=Woojae Jeon, OU=APU Development, O=test.com, L=Seoul, C=KR" -keypass "test1234" -keystore apiEncryptionKey.jks -storepass "test1234"
+
+# you can check the file
+# keytool -list -keystore apiEncryptionKey.jks -v
+
+# to make publicKey
+# keytool -export -alias apiEncryptionKey -keystore apiEncryptionKey.jks -rfc -file trustServer.cer
+# keytool -import -alias trustServer -file trustServer.cer -keystore publicKey.jks
