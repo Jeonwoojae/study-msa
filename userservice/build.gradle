@@ -43,6 +43,9 @@ dependencies {
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp:4.0.0'
 
+//	Feign Client
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
 }
 
 dependencyManagement {
