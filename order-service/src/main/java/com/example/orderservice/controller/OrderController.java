@@ -30,7 +30,7 @@ public class OrderController {
     }
 
     @PostMapping("/{user_id}/orders")
-    public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId,
+    public ResponseEntity<ResponseOrder> createOrder(@PathVariable("user_id") String userId,
                                                      @RequestBody RequestOrder orderDetails) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/{user_id}/orders")
-    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) {
+    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("user_id") String userId) {
         Iterable<OrderEntity> orderList = orderService.getOrdersByUserId(userId);
 
         List<ResponseOrder> result = new ArrayList<>();

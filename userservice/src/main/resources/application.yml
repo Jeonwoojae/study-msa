@@ -23,7 +23,7 @@ spring:
   cloud:
     config:
       name: userservice
-      profile: active
+      profile: default
 
 eureka:
   instance:
