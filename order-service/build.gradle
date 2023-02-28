@@ -32,6 +32,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.modelmapper:modelmapper:2.1.1'
+
+    //mariaDB
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.0'
+
+    //kafka
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 dependencyManagement {

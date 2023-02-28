@@ -40,4 +40,24 @@
   - ``plugin.path=[jdbc connect 폴더 경로]``
   - jdbcSourceConnector에서 mariaDB를 사용하기 위해 mariaDB 드라이버 복사
     - ./share/java/kafka/폴더에 mariadb-java-client-2.7.2.jar 파일 복사
-###
+## 설치중 주키퍼 서버를 실행할 때 메인 클래스를 찾지 못하는 오류 발생
+- docker를 사용하여 환경 변경
+### topic 생성
+``
+docker exec broker kafka-topics --bootstrap-server broker:9092 --create --topic quickstart
+``
+
+### topic list 확인
+``
+docker exec  broker kafka-topics --bootstrap-server localhost:9092 --list
+``
+
+### producer 테스트
+``
+docker exec -it broker kafka-console-producer --bootstrap-server broker:9092 --topic quickstart
+``
+
+### consumer 테스트
+``
+docker exec -it broker kafka-console-consumer --bootstrap-server broker:9092 --topic quickstart --from-beginning
+``
