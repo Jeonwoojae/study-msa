@@ -1,7 +1,7 @@
 encrypt:
 #  key: asdjnwejewhewafaew41341
   key-store:
-    location: file:\\\C:\Users\user\OneDrive - kumoh.ac.kr\study_msa\keystore\apiEncryptionKey.jks
+    location: file:/apiEncryptionKey.jks
     password: test1234
     alias: apiEncryptionKey
 

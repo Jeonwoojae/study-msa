@@ -14,16 +14,37 @@
 ### 네트워크 생성
 ```shell
 docker network create --gateway 192.168.0.1 --subnet 192.168.0.0/16 {네트워크 이름}
+dns나 서브넷 주소는 빈 주소로 알아서 적어야 하는 듯
 ```
 네트워크 상세정보(주소와 등록된 컨테이너 확인 가능)
 ```shell
 docker network inspect {네트워크 이름}
 ```
 
-## RabbitMQ
+## RabbitMQ 실행
 ```shell
 docker run -d --name rabbitmq --network ecommerce-network \
  -p 15672:15672 -p 5672:5672 -p 15671:15671 -p 5671:5671 -p 4369:4369 \
  -e RABBITMQ_DEFAULT_USER=guest \
  -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
+```
+
+### config-serivce Dockerfile
+```shell
+FROM openjdk:11-jre-slim-buster
+VOLUME /tmp
+COPY build/libs/config-service-1.0.jar ConfigService.jar
+COPY apiEncryptionKey.jks apiEncryptionKey.jks
+ENTRYPOINT ["java","-jar","ConfigService.jar"]
+```
+
+### docker 빌드하여 실행하기
+```shell
+docker build -t dnwo0719/config-service:1.0 . 
+```
+
+```shell
+docker run -d -p 8888:8888 --network ecommerce-network \
+-e "spring.rabbitmq.host=rabbitmq" -e "spring.profiles.active=default"\
+--name config-service dnwo0719/config-service:1.0
 ```
