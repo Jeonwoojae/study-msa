@@ -48,3 +48,19 @@ docker run -d -p 8888:8888 --network ecommerce-network \
 -e "spring.rabbitmq.host=rabbitmq" -e "spring.profiles.active=default"\
 --name config-service dnwo0719/config-service:1.0
 ```
+
+### discovery-serivce 빌드
+```shell
+docker build --tag dnwo0719/discovery-service:1.0 .
+```
+실행
+```shell
+docker run -d -p 8761:8761 --network ecommerce-network \
+ -e "spring.cloud.config.uri=http://config-service:8888" \
+ --name discovery-service dnwo0719/discovery-service:1.0
+```
+
+docker hub에 올리기
+```shell
+docker push dnwo0719/discovery-service:1.0
+```
