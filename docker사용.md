@@ -64,3 +64,41 @@ docker hub에 올리기
 ```shell
 docker push dnwo0719/discovery-service:1.0
 ```
+
+### apigateway-service 빌드
+
+
+
+실행하기
+```shell
+docker run -d -p 8000:8000 --network ecommerce-network \
+ -e "spring.cloud.config.uri=http://config-service:8888" \
+ -e "spring.rabbitmq.host=rabbitmq" \
+ -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
+ --name apigateway-service dnwo0719/apigateway-service:1.0
+```
+
+### MariaDB 빌드하기
+- 이미 생성된 mariaDB의 테이블 파일을 가지고 빌드하면 테이블을 새로 create할 필요가 없다
+- 설치한 mariaDB의 폴더 경로로 가서 data폴더의 데이터를 작업할 dockerfile쪽으로 복사한다.
+- ``mysqld: Please consult the Knowledge Base to find out how to run mysqld as root!`` 해당 오류로 루트 옵션 추가
+```dockerfile
+FROM mariadb
+ENV MYSQL_ROOT_PASSWORD test1357
+ENV MYSQL_DATABASE mydb
+COPY ./data /var/lib/mysql
+EXPOSE 3306
+ENTRYPOINT ["mysqld", "--user=root"]
+```
+```shell
+docker run --name mariadb \
+  -e MYSQL_ROOT_PASSWORD=1234\
+  -e MYSQL_DATABASE=mydb\
+  -p 3306:3306\
+  -d mariadb
+```
+
+권한 설정
+```shell
+
+```

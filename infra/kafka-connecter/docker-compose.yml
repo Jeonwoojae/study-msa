@@ -25,8 +25,11 @@ services:
       CONNECT_PLUGIN_PATH: "/usr/share/java,/etc/kafka-connect/jars"
     volumes:
       - ./jars:/etc/kafka-connect/jars
+    networks:
+      my-network:
+        ipv4_address: 197.168.0.102
 
 networks:
-  default:
+  my-network:
     external:
-      name: kafka
+      name: ecommerce-network
