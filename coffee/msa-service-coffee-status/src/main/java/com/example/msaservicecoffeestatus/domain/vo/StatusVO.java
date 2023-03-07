@@ -1,7 +1,9 @@
-package com.example.msaservicecoffeeorder.domain.vo;
+package com.example.msaservicecoffeestatus.domain.vo;
 
-public class OrderVO {
+public class StatusVO {
     private String _id;
+    private String statusName;
+    private String orderId;
     private String orderName;
     private String userId;
     private String userName;
@@ -12,6 +14,22 @@ public class OrderVO {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderName() {

@@ -1,20 +1,14 @@
-package com.example.msaservicecoffeeorder.springboot.rest;
+package com.example.msaservicecoffeestatus.springboot.rest;
 
 
-import com.example.msaservicecoffeeorder.domain.vo.OrderVO;
-import com.example.msaservicecoffeeorder.springboot.feign.IMemberClient;
-import com.example.msaservicecoffeeorder.springboot.service.OrderServiceImpl;
-import com.example.msaservicecoffeeorder.system.common.ResponseMetaVO;
-import com.example.msaservicecoffeeorder.system.common.ResponseVO;
-import com.example.msaservicecoffeeorder.system.queue.RabbitMQMessage;
-import com.example.msaservicecoffeeorder.system.queue.RabbitMQSender;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.example.msaservicecoffeestatus.domain.vo.StatusVO;
+import com.example.msaservicecoffeestatus.springboot.service.StatusServiceImpl;
+import com.example.msaservicecoffeestatus.system.common.ResponseMetaVO;
+import com.example.msaservicecoffeestatus.system.common.ResponseVO;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +19,18 @@ import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
-@RequestMapping("/api/v1/order")
+@RequestMapping("/api/v1/status")
 @RestController
-@RefreshScope
-@Api(value = "OrderController")
-public class OrderController {
+@Api(value = "StatusController")
+public class StatusController {
 
-    private Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private Logger logger = LoggerFactory.getLogger(StatusController.class);
 
     @Autowired
     MessageSource messageSource;
 
     @Autowired
-    OrderServiceImpl orderServiceImpl;
-
-    @Autowired
-    IMemberClient iMemberClient;
-
-    @Autowired
-    private RabbitMQSender rabbitMQSender;
-
-    @Value("${propery_owner}")
-    private String propery_owner;
+    StatusServiceImpl statusServiceImpl;
 
     @ApiOperation(value="", notes="전체조회", response = ResponseVO.class)
     @ApiResponses(value={
@@ -56,23 +40,20 @@ public class OrderController {
             @ApiResponse(code=404, message = "The resource you were trying to reach is not found")
     })
     @GetMapping
-    public ResponseEntity<ResponseVO> getAllOrder(){
-
-        logger.debug("############# propery_owner : " + propery_owner + " ####################");
-
+    public ResponseEntity<ResponseVO> getAllStatus(){
         //결과 객체선언
         ResponseVO responseVO = new ResponseVO();
         ResponseMetaVO responseMetaVO = new ResponseMetaVO();
 
         //전체 count 조회
-        responseMetaVO.setAllRecordCount(Long.bitCount(orderServiceImpl.getAllOrderCount()));
+        responseMetaVO.setAllRecordCount(Long.bitCount(statusServiceImpl.getAllStatusCount()));
 
         //조회
-        List<OrderVO> orderVOList =
-                orderServiceImpl.getAllOrder("1", "10", "desc", "_id");
+        List<StatusVO> statusVOList =
+                statusServiceImpl.getAllStatus("1", "10", "desc", "_id");
 
         //결과객체 리턴
-        responseVO.setResultVO(orderVOList);
+        responseVO.setResultVO(statusVOList);
         responseVO.setResponseMetaVO(responseMetaVO);
         return new ResponseEntity<ResponseVO>(responseVO, HttpStatus.OK);
     }
@@ -85,49 +66,23 @@ public class OrderController {
             @ApiResponse(code=404, message = "The resource you were trying to reach is not found"),
     })
 
-//    public ResponseEntity<ResponseVO> addOrderFallback(@RequestBody OrderVO orderVO) throws Exception {
-//        logger.debug("=====>>>>> addOrderFallback method executed! <<<<<==================");
-//        return new ResponseEntity<ResponseVO>(new ResponseVO(), HttpStatus.OK);
-//    }
-//    @HystrixCommand(fallbackMethod = "addOrderFallback")
     @PostMapping
-    public ResponseEntity<ResponseVO> addOrder(@RequestBody OrderVO orderVO) throws Exception {
+    public ResponseEntity<ResponseVO> addStatus(@RequestBody StatusVO statusVO) throws Exception {
 
         //결과 객체선언
         ResponseVO responseVO = new ResponseVO();
         ResponseMetaVO responseMetaVO = new ResponseMetaVO();
 
-        //Member 조회
-        String userName = iMemberClient.getUseById(orderVO.getUserId());
-        logger.debug("Member 조회 getUseById : 결과 userName ===> "
-                + userName);
-
         //입력
-        orderVO.set_id(UUID.randomUUID().toString());
-
-        if(null == userName){
-            orderVO.setUserId("");
-        }else{
-            orderVO.setUserName(userName);
-        }
-
-        OrderVO resultOrderVO = orderServiceImpl.addOrder(orderVO);
+        statusVO.set_id(UUID.randomUUID().toString());
+        StatusVO resultStatusVO = statusServiceImpl.addStatus(statusVO);
 
         //건수
         responseMetaVO.setAllRecordCount(1);
 
-        //Queue 전송
-        RabbitMQMessage rabbitMQMessage = new RabbitMQMessage();
-        rabbitMQMessage.set_id(orderVO.get_id());
-        rabbitMQMessage.setOrderId(orderVO.get_id());
-        rabbitMQMessage.setOrderName(orderVO.getOrderName());
-        rabbitMQMessage.setUserId(orderVO.getUserId());
-        rabbitMQMessage.setUserName(orderVO.getUserName());
-        rabbitMQSender.send(rabbitMQMessage);
-
         //결과객체 리턴
         responseVO.setResponseMetaVO(responseMetaVO);
-        responseVO.setResultVO(resultOrderVO);
+        responseVO.setResultVO(resultStatusVO);
         return new ResponseEntity<ResponseVO>(responseVO, HttpStatus.OK);
     }
 
@@ -140,27 +95,27 @@ public class OrderController {
             @ApiResponse(code=404, message = "The resource you were trying to reach is not found"),
     })
     @PutMapping
-    public ResponseEntity<ResponseVO> modifyOrder(@RequestBody OrderVO orderVO){
+    public ResponseEntity<ResponseVO> modifyStatus(@RequestBody StatusVO statusVO){
 
         //결과 객체선언
         ResponseVO responseVO = new ResponseVO();
         ResponseMetaVO responseMetaVO = new ResponseMetaVO();
 
         //수정
-        OrderVO resultOrderVO = orderServiceImpl.modifyOrder(orderVO);
+        StatusVO resultStatusVO = statusServiceImpl.modifyStatus(statusVO);
 
         //건수
         responseMetaVO.setAllRecordCount(1);
 
         //결과객체 리턴
         responseVO.setResponseMetaVO(responseMetaVO);
-        responseVO.setResultVO(resultOrderVO);
+        responseVO.setResultVO(resultStatusVO);
 
         return new ResponseEntity<ResponseVO>(responseVO, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<ResponseVO> removeOrder(@RequestBody List<String> _idList) throws Exception {
+    public ResponseEntity<ResponseVO> removeStatus(@RequestBody List<String> _idList) throws Exception {
 
         //결과 객체선언
         ResponseVO responseVO = new ResponseVO();
@@ -168,14 +123,14 @@ public class OrderController {
 
         //삭제
         int cnt =_idList.size();
-        List<OrderVO> orderVOList = new ArrayList<>();
+        List<StatusVO> statusVOList = new ArrayList<>();
         for (int i=0; i< cnt; i++){
-            OrderVO orderVO = new OrderVO();
-            orderVO.set_id(_idList.get(i));
-            orderVOList.add(orderVO);
+            StatusVO statusVO = new StatusVO();
+            statusVO.set_id(_idList.get(i));
+            statusVOList.add(statusVO);
         }
 
-        orderServiceImpl.removeOrder(orderVOList);
+        statusServiceImpl.removeStatus(statusVOList);
 
         //건수
         responseMetaVO.setAllRecordCount(_idList.size());
