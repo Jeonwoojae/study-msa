@@ -1,4 +1,4 @@
-package com.example.msaservicecoffeeorder.springboot.feign;
+package com.example.msaservicecoffeemember.domain.vo;
 
 public class UserVO {
     private String _id;
