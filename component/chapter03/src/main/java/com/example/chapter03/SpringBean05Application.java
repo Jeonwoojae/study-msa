@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.TimeUnit;
@@ -34,7 +35,7 @@ public class SpringBean05Application {
     }
 
     @Bean
-    //@Scope("prototype")
+    @Scope("prototype")
     public DateFormatter singletonDateFormatter() {
         return new DateFormatter("yyyy-MM-dd'T'HH:mm:ss");
     }
