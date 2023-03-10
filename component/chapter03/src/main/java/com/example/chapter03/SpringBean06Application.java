@@ -16,11 +16,16 @@ public class SpringBean06Application {
         ctxt.close();
     }
 
+    /**
+     * LifeCycleComponent 클래스의 init 메서드를 설정한다. 그럼 스프링 빈 생성 후 실행된다.
+     * detroy는 clear메서드 이름을 설정하며 애플리케이션이 종료되기 전 실행된다.
+     */
     @Bean(initMethod = "init", destroyMethod = "clear")
     public LifeCycleComponent lifecycleComponent() {
         return new LifeCycleComponent();
     }
 
+    // 스프링 빈으로 사용하기 위해 @Bean 정의
     @Bean
     public BeanPostProcessor beanPostProcessor() {
         return new PrintableBeanPostProcessor();

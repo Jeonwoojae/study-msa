@@ -14,17 +14,7 @@ import java.util.StringJoiner;
 @Slf4j
 @Service
 public class OrderPrinter implements Printer<ProductOrder> {
-//    Field Injection
-    @Autowired
-    @Qualifier("localDateTimeFormatter")
-    private Formatter formatter01;
 
-    private Formatter formatter02;
-//    Setter Method Injection
-    @Autowired
-    public void setFormatter02(@Qualifier("LocalDateTimeFormatter") Formatter formatter) {
-        this.formatter02 = formatter;
-    }
 
     private Formatter formatter;
 //    Constructor Injection
